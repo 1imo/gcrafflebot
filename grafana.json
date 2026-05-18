@@ -1,0 +1,295 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_NUGLABS_PGQL",
+      "label": "Project SQL datasource",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-postgresql-datasource",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    { "type": "panel", "id": "stat", "name": "Stat", "version": "" },
+    { "type": "panel", "id": "table", "name": "Table", "version": "" },
+    { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" },
+    { "type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.3.3" },
+    { "type": "datasource", "id": "grafana-postgresql-datasource", "name": "PostgreSQL", "version": "1.0.0" }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" } }, "overrides": [] },
+      "gridPos": { "h": 4, "w": 5, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS value FROM analytics_events WHERE $__timeFilter(created_at) AND event = 'gcraffle_completed';",
+          "refId": "A"
+        }
+      ],
+      "title": "Raffles completed",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" } }, "overrides": [] },
+      "gridPos": { "h": 4, "w": 5, "x": 5, "y": 0 },
+      "id": 2,
+      "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM((props_json->>'membersPulled')::int), 0) AS value FROM analytics_events WHERE $__timeFilter(created_at) AND event = 'gcraffle_completed';",
+          "refId": "A"
+        }
+      ],
+      "title": "Members pulled (window)",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "orange" } }, "overrides": [] },
+      "gridPos": { "h": 4, "w": 5, "x": 10, "y": 0 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(winners_selected), 0) AS value FROM group_member_exports WHERE $__timeFilter(created_at);",
+          "refId": "A"
+        }
+      ],
+      "title": "Winners selected (window)",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] },
+      "gridPos": { "h": 4, "w": 4, "x": 15, "y": 0 },
+      "id": 4,
+      "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS value FROM analytics_events WHERE $__timeFilter(created_at) AND event = 'gcraffle_winner_count_invalid';",
+          "refId": "A"
+        }
+      ],
+      "title": "Invalid winner inputs",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" } }, "overrides": [] },
+      "gridPos": { "h": 4, "w": 5, "x": 19, "y": 0 },
+      "id": 5,
+      "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS value FROM sessions WHERE active = TRUE;",
+          "refId": "A"
+        }
+      ],
+      "title": "Active sessions",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" } }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "id": 6,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, '5m'), 'members_pulled' AS metric, COALESCE(SUM(member_count), 0) AS value FROM group_member_exports WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1;",
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, '5m'), 'winners_selected' AS metric, COALESCE(SUM(winners_selected), 0) AS value FROM group_member_exports WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1;",
+          "refId": "B"
+        },
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, '5m'), 'winners_requested' AS metric, COALESCE(SUM(winners_requested), 0) AS value FROM group_member_exports WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1;",
+          "refId": "C"
+        }
+      ],
+      "title": "Members pulled vs winners (DB)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" } }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "id": 7,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, '5m'), event AS metric, COUNT(*) AS value FROM analytics_events WHERE $__timeFilter(created_at) AND event LIKE 'gcraffle%' GROUP BY 1, 2 ORDER BY 1;",
+          "refId": "A"
+        }
+      ],
+      "title": "GC raffle analytics events",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "id": 8,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT event, COUNT(*) AS n FROM analytics_events WHERE $__timeFilter(created_at) GROUP BY event ORDER BY n DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Analytics event breakdown",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "id": 9,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG((props_json->>'winnersRequested')::numeric) AS avg_requested, AVG((props_json->>'membersPulled')::numeric) AS avg_pulled, AVG((props_json->>'winnersSelected')::numeric) AS avg_selected, COUNT(*) AS raffles FROM analytics_events WHERE $__timeFilter(created_at) AND event = 'gcraffle_completed';",
+          "refId": "A"
+        }
+      ],
+      "title": "Raffle averages (analytics)",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 20 },
+      "id": 10,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT created_at, requested_by_username, group_title, member_count AS members_pulled, winners_requested, winners_selected FROM group_member_exports WHERE $__timeFilter(created_at) ORDER BY created_at DESC LIMIT 200;",
+          "refId": "A"
+        }
+      ],
+      "title": "Recent raffles (DB)",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+      "id": 11,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT created_at, event, props_json FROM analytics_events WHERE $__timeFilter(created_at) ORDER BY created_at DESC LIMIT 200;",
+          "refId": "A"
+        }
+      ],
+      "title": "Recent analytics events",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+      "id": 12,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "${DS_NUGLABS_PGQL}" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT e.created_at, e.group_title, m.member_user_id, m.username, m.first_name, m.last_name FROM group_member_exports e JOIN group_member_export_members m ON m.export_id = e.id AND m.is_winner = TRUE WHERE $__timeFilter(e.created_at) ORDER BY e.created_at DESC, m.id LIMIT 300;",
+          "refId": "A"
+        }
+      ],
+      "title": "Recent winners (DB)",
+      "type": "table"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["gcrafflebot"],
+  "templating": { "list": [] },
+  "time": { "from": "now-24h", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "gcrafflebot analytics",
+  "uid": "gcrafflebot-analytics",
+  "version": 1,
+  "weekStart": ""
+}
