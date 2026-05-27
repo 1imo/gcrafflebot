@@ -159,7 +159,7 @@ export class GroupPickerUseCase {
       });
       await this.notifications.sendToClient(
         String(user.userId),
-        `Select a group ( ${winnerCount} winner${winnerCount === 1 ? "" : "s"} will be drawn ):`,
+        `Select a group ( ${winnerCount} winner${winnerCount === 1 ? "" : "s"} will be drawn ) :`,
         groupPickerKeyboard(options.map((option) => option.label))
       );
     } catch (error) {
@@ -239,10 +239,10 @@ export class GroupPickerUseCase {
 
       const winnerLinks = winners.map((member) => formatMemberTelegramLink(member));
       const header =
-        `Winners for “${group.title}” ( ${winnersSelected} of ${humans.length} members, ${winnersRequested} requested ):\n`;
+        `Winners for “${group.title}” ( ${winnersSelected} of ${humans.length} members, ${winnersRequested} requested ) :\n`;
       const chunks = chunkLines(winnerLinks);
       for (let i = 0; i < chunks.length; i++) {
-        const prefix = i === 0 ? header : `Winners ( continued ${i + 1}/${chunks.length} ):\n`;
+        const prefix = i === 0 ? header : `Winners ( continued ${i + 1}/${chunks.length} ) :\n`;
         await this.notifications.sendToClient(String(user.userId), `${prefix}${chunks[i]}`);
       }
       await this.showMainMenu(user.userId);
